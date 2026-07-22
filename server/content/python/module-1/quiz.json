@@ -1,0 +1,27 @@
+[
+  {
+    "question": "Which function displays text on the screen in Python?",
+    "options": ["show()", "print()", "echo()", "display()"],
+    "correctIndex": 1
+  },
+  {
+    "question": "What will print(\"5\" + \"3\") output?",
+    "options": ["8", "53", "Error", "15"],
+    "correctIndex": 1
+  },
+  {
+    "question": "How do you start a comment in Python?",
+    "options": ["//", "<!--", "#", "/*"],
+    "correctIndex": 2
+  },
+  {
+    "question": "Which of these is a valid variable name?",
+    "options": ["2cool", "my-var", "my_var", "my var"],
+    "correctIndex": 2
+  },
+  {
+    "question": "What data type is the value \"Hello\"?",
+    "options": ["Integer", "Boolean", "String", "Float"],
+    "correctIndex": 2
+  }
+]

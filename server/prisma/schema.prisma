@@ -1,0 +1,257 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  password     String
+  level        Int       @default(1)
+  xp           Int       @default(0)
+  coins        Int       @default(0)
+  streak       Int       @default(0)
+  lastActiveAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  refreshTokens      RefreshToken[]
+  progress           Progress[]
+  badges             UserBadge[]
+  certificates       Certificate[]
+  placementAttempts  PlacementAttempt[]
+  problemCompletions ProblemCompletion[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("refresh_tokens")
+}
+
+model Language {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  description String   @db.Text
+  icon        String?
+  difficulty  String   @default("Beginner")
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  modules      Module[]
+  certificates Certificate[]
+
+  @@map("languages")
+}
+
+model Module {
+  id         String   @id @default(uuid())
+  languageId String
+  language   Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
+  slug       String
+  title      String
+  order      Int      @default(0)
+
+  levels Level[]
+
+  @@unique([languageId, slug])
+  @@map("modules")
+}
+
+model Level {
+  id       String @id @default(uuid())
+  moduleId String
+  module   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  slug     String
+  title    String
+  order    Int    @default(0)
+  theory   String @db.Text
+  examples Json
+  practice Json
+  xpReward Int    @default(50)
+
+  questions Question[]
+  progress  Progress[]
+
+  @@unique([moduleId, slug])
+  @@map("levels")
+}
+
+model Question {
+  id           String @id @default(uuid())
+  levelId      String
+  level        Level  @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  question     String @db.Text
+  options      Json
+  correctIndex Int
+  order        Int    @default(0)
+
+  @@map("questions")
+}
+
+model Progress {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  levelId     String
+  level       Level     @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  completed   Boolean   @default(false)
+  bestScore   Int       @default(0)
+  attempts    Int       @default(0)
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, levelId])
+  @@map("progress")
+}
+
+model Badge {
+  id          String @id @default(uuid())
+  code        String @unique
+  name        String
+  description String
+  icon        String @default("★")
+
+  users UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id       String   @id @default(uuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId  String
+  badge    Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  earnedAt DateTime @default(now())
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}
+
+model Certificate {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  languageId String
+  language   Language @relation(fields: [languageId], references: [id], onDelete: Cascade)
+  issuedAt   DateTime @default(now())
+
+  @@unique([userId, languageId])
+  @@map("certificates")
+}
+
+model Company {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  logo        String?
+  salaryRange String?
+  pattern     String   @db.Text
+  syllabus    Json
+  available   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  questions PlacementQuestion[]
+  attempts  PlacementAttempt[]
+
+  @@map("companies")
+}
+
+model PlacementQuestion {
+  id           String  @id @default(uuid())
+  companyId    String
+  company      Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  type         String
+  question     String  @db.Text
+  options      Json?
+  correctIndex Int?
+  answer       String? @db.Text
+  difficulty   String  @default("Medium")
+  order        Int     @default(0)
+
+  @@map("placement_questions")
+}
+
+model SkillTrack {
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  name            String
+  summary         String   @db.Text
+  skills          Json
+  certifications  Json
+  companyTable    Json
+  sampleQuestions Json
+  createdAt       DateTime @default(now())
+
+  @@map("skill_tracks")
+}
+
+model PlacementAttempt {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId      String
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  scorePercent   Int
+  totalQuestions Int
+  correctCount   Int
+  attemptedAt    DateTime @default(now())
+
+  @@map("placement_attempts")
+}
+
+model EligibilityRule {
+  id                  String   @id @default(uuid())
+  minCourseCompletion Int      @default(70)
+  minCertificates     Int      @default(1)
+  minXp               Int      @default(500)
+  minQuizAverage      Int      @default(60)
+  minStreak           Int      @default(0)
+  updatedAt           DateTime @updatedAt
+
+  @@map("eligibility_rules")
+}
+
+model Problem {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  platform    String   @default("leetcode")
+  title       String
+  difficulty  String   @default("Easy")
+  topic       String
+  description String   @db.Text
+  videoUrl    String?
+  leetcodeUrl String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  completions ProblemCompletion[]
+
+  @@map("problems")
+}
+
+model ProblemCompletion {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problemId   String
+  problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  completedAt DateTime @default(now())
+
+  @@unique([userId, problemId])
+  @@map("problem_completions")
+}

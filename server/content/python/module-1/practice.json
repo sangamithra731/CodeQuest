@@ -1,0 +1,7 @@
+[
+  {
+    "prompt": "Print the message: Hello, CodeQuest!",
+    "starterCode": "# write your code below\n",
+    "solution": "print(\"Hello, CodeQuest!\")"
+  }
+]

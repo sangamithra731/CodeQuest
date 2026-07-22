@@ -1,0 +1,4 @@
+[
+  { "code": "print(\"Hello, world!\")", "explanation": "Prints the text between the quotes exactly as written." },
+  { "code": "print(\"CodeQuest\")\nprint(\"Level 1\")", "explanation": "Each print() call starts on a new line." }
+]

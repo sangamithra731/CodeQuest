@@ -1,0 +1,4 @@
+{
+  "title": "Setting Up & Your First Print",
+  "body": "Python reads your code top to bottom, one line at a time. The very first thing most programmers learn is how to make the computer say something back — that's what the print() function does. Whatever you put inside the parentheses gets shown on the screen."
+}
