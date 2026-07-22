@@ -1,0 +1,57 @@
+/* ============================================================
+   GLOBAL THEME — CSS variables, dark (default) + light mode
+   Toggle by setting data-theme="light" on <html> or <body>
+   ============================================================ */
+
+:root,
+[data-theme="dark"] {
+  --bg-page: #0d0b1e;
+  --bg-surface: #17142c;
+  --bg-surface-2: #1f1b38;
+  --border: #2b2650;
+  --text-primary: #f2f0fb;
+  --text-secondary: #9d97c2;
+  --text-muted: #6f6a94;
+
+  --accent-purple: #a855f7;
+  --accent-purple-soft: rgba(168, 85, 247, 0.15);
+  --accent-pink: #ec4899;
+  --accent-cyan: #22d3ee;
+  --accent-green: #34d399;
+  --accent-gold: #fbbf24;
+  --accent-red: #f87171;
+
+  --gradient-primary: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] {
+  --bg-page: #f5f4fb;
+  --bg-surface: #ffffff;
+  --bg-surface-2: #f0eefb;
+  --border: #e6e3f5;
+  --text-primary: #1e1b33;
+  --text-secondary: #6b6690;
+  --text-muted: #9791b8;
+
+  --accent-purple: #9333ea;
+  --accent-purple-soft: rgba(147, 51, 234, 0.1);
+  --accent-pink: #db2777;
+  --accent-cyan: #0891b2;
+  --accent-green: #059669;
+  --accent-gold: #d97706;
+  --accent-red: #dc2626;
+
+  --gradient-primary: linear-gradient(135deg, #9333ea 0%, #db2777 100%);
+  --shadow-card: 0 2px 12px rgba(30, 27, 51, 0.08);
+}
+
+* {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+}
+
+body {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
