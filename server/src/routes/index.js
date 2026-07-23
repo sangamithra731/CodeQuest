@@ -12,7 +12,7 @@ router.use("/progress", progressRoutes);
 router.use("/quiz", quizRoutes);
 router.use("/languages", languageRoutes);
 router.use("/placement", require("./placementRoutes"));
-router.use("/placement", require("./placementRoutes"));
+
 router.use("/skill-tracks", require("./skillTrackRoutes"));
 router.use("/eligibility", require("./eligibilityRoutes"));
 router.use("/problems", require("./problemRoutes"));
