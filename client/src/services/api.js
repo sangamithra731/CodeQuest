@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5050";
-
+const BASE_URL = "https://codequest-production-bd5c.up.railway.app";const BASE_URL = "https://codequest-production-bd5c.up.railway.app";
 export const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
